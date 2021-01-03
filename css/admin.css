@@ -1,0 +1,7 @@
+/*限制表格文本长度 */
+.text-len-limted {
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
