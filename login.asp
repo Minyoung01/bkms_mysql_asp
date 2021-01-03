@@ -1,3 +1,4 @@
+<!--#include file="utility/log.asp"-->
 <%
     Sub GetSession(UserID,UserPWD)
         Session("UserID")=UserID
@@ -25,6 +26,7 @@ top.document.location="login.asp"
             Session("UserPWD")=rs("password")
             Session("login")=true
             Session.Timeout=30
+            Call logInOut("###<ID:"&Session("UserID")&"> |log   in| TIME:")
             Response.Redirect("admin.asp")
             rs.close
             set rs=nothing
