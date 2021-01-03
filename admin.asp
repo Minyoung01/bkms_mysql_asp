@@ -192,8 +192,8 @@ response.write conn.state '是否连接成功 %>
         }
     </style>
     <!-- Custom styles for this template -->
-    <link href="css/dashboard.css" rel="stylesheet">
-    <link href="css/admin.css" rel="stylesheet">
+    <link href="resources/static/css/dashboard.css" rel="stylesheet">
+    <link href="resources/static/css/admin.css" rel="stylesheet">
 </head>
 
 <body>
@@ -543,7 +543,7 @@ response.write conn.state '是否连接成功 %>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
     <!-- 使用bt4务必引入此文件！！！！！！！ -->
     <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <script src="js/dashboard.js"></script>
+    <script src="resources/static/js/dashboard.js"></script>
     <script type="text/javascript">
     function ShowElement(element) {
         var oldhtml = element.innerHTML;
