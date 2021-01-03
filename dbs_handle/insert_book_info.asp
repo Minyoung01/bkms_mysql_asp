@@ -12,7 +12,19 @@
     <!-- 判断权限 -->
     <%if not Session("login") then response.redirect("../login.asp")%>
     <!-- 函数定义 -->
-    <%
+    <%  
+        Sub WriteLog(logStr)
+                Const ForAppending = 8 '8追加，2重写
+                LogFile = Server.MapPath("/bkms/bkms_mysql_asp/log/dbs_log/insert_book_info.txt")
+                Set objFSO = CreateObject("Scripting.FileSystemObject")
+                If objFSO.FileExists(LogFile) Then
+                    Set objFile = objFSO.OpenTextFile(LogFile,ForAppending)
+                Else
+                    Set objFile = objFSO.CreateTextFile(LogFile)
+                End If
+                objFile.Writeline logStr&Now
+                objFile.Close
+        End Sub
 		Sub successFn(title)
     	response.Write("<script>alert('数据"&title&"成功');window.location.href='../admin.asp'</script>")
     	response.End()
@@ -21,7 +33,7 @@
 		Sub errFn(title)
     	errMessage = "错误号:"&Err.Number & chr(10) & "错误来源:"&Err.Source & chr(10)&"错误描述:"&Err.Description & chr(10)
     	response.Write(errMessage)
-    	response.Write("<script>alert('"&title&",页面未跳转');</script>")
+    	response.Write("<script>alert('"&title&",页面未跳转');window.history.back().reload;</script>")
     	response.End()
 		End sub
 
@@ -74,7 +86,6 @@
 		dim conn
 		set conn = server.CreateObject("adodb.connection")
 		conn.open "driver={MySQL ODBC 8.0 ANSI Driver};server=127.0.0.1; uid=root;password=root;database=books_management"  
-		response.write conn.state '是否连接成功
 		Set rs = Server.CreateObject( "ADODB.Recordset" )
 	%>
     <!-- 判断重复ID -->
@@ -83,8 +94,6 @@
         rs.open sql,conn,1,1 '（1,1为只读数据,1,3为插入数据，2,3是修改数据)
         ' 遍历数据开始
         do while not rs.eof '如果指针不再最后一行
-	        response.Write request.form("book_id")
-	        response.Write rs("book_id")
         	if trim(request.form("book_id")) = trim(rs("book_id")) then
         		call responseEndWithMsg("ID重复")   
             end if 
@@ -97,10 +106,11 @@
             sql = "insert into book_info(`book_id`,`name`,`author`,`publish`,`ISBN`,`introduction`,`price`,`language`,`pubdate`,`class_id`,`pressmark`,`state`) values('"&request.form("book_id")&"','"&request.form("name")&"','"&request.form("author")&"','"&request.form("publish")&"','"&request.form("ISBN")&"','"&request.form("introduction")&"','"&request.form("price")&"','"&request.form("language")&"','"&request.form("pubdate")&"','"&request.form("class_id")&"','"&request.form("pressmark")&"','"&request.form("state")&"')"
             set res =  conn.execute(sql)
             if Err.number = 0 then
-                sql = "select * from book_info  order by author desc"
-                rs.open sql,conn,1,3 '（1,1为只读数据,1,3为插入数据，2,3是修改数据)
+                Call WriteLog("###<ID:"&Session("UserID")&"> INSERT ID=|"&request.form("book_id")&"| 的数据  |SUCCESS|  TIME:")
+                rs.open sql,conn,1,3 '（1,1为只读数据,1,3为插入数据，2,3是修改数据)     
                 call successFn("插入")
             else
+                Call WriteLog("###<ID:"&Session("UserID")&"> INSERT ID=|"&request.form("book_id")&"| 的数据  |ERRRORS|  TIME:")
                 call errFn("数据插入失败")
             end if
 	%>
