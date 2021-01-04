@@ -1,8 +1,9 @@
 <%@Language="vbscript" Codepage="65001"   %>
 <!-- 中文显示 -->
+<!--#include file="utility/log.asp"-->
 <!-- 权限验证 -->
 <%
-if not Session("login") then response.redirect("login.asp")  
+if not Session("login") then response.redirect("resources/templates/signin.html")  
 %>
 <!-- 数据库连接 -->
 <%
@@ -16,7 +17,6 @@ response.write conn.state '是否连接成功 %>
     name =request.QueryString("name")
     action = request.QueryString("action")
     book_id=request.QueryString("book_id")
-    response.Write action
     Set rs = Server.CreateObject( "ADODB.Recordset" )
     ' 默认操作
     if action="" then
@@ -31,9 +31,10 @@ response.write conn.state '是否连接成功 %>
         sql = "select * from book_info order by book_id desc"
         rs.open sql,conn,1,1 '（1,1为只读数据,1,3为插入数据，2,3是修改数据)
         if Err.number = 0 then
-            
+            Call updateLog("###<ID:"&Session("UserID")&"> UPDATE ID=|"&request.QueryString("target_id")&"| 的数据  |SUCCESS|  TIME:")
             call successFn("修改")
         else
+            Call updateLog("###<ID:"&Session("UserID")&"> UPDATE ID=|"&request.QueryString("target_id")&"| 的数据  |ERROR  |  TIME:")
             call errFn("数据修改失败或未修改")
         end if
      
@@ -41,7 +42,6 @@ response.write conn.state '是否连接成功 %>
         '删
         on error resume next 'Err对象保存了“错误信息”
         sql = "delete from book_info where book_id ='"&book_id&"'"
-        response.Write(sql)
         set res =  conn.execute(sql)
         if Err.number = 0 then
             sql = "select * from book_info  order by book_id desc"
@@ -85,7 +85,7 @@ response.write conn.state '是否连接成功 %>
             ' 遍历数据开始
             do while not rs.eof '如果指针不再最后一行
             response.Write request.form("book_id")
-            response.Write rs("book_id")
+
                 if trim(request.form("book_id")) = trim(rs("book_id")) then
                     response.Write("<script>alert('ID重复');window.history.back().reload;</script>")
 
@@ -164,7 +164,7 @@ response.write conn.state '是否连接成功 %>
     end sub
  %>
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 
 <head>
     <meta charset="utf-8">
@@ -576,10 +576,17 @@ response.write conn.state '是否连接成功 %>
         data.book_id = $.trim($("#book_id_" + data.target_id).text());
         data.name = $.trim($("#name_" + data.target_id).text());
         data.author = $.trim($("#author_" + data.target_id).text());
+        window.location.origin + "/bkms/bkms_mysql_asp/dbs_handle/update_book_info.asp"
         $.ajax({
-            url: window.location.href + "?action=update&target_id=" + data.target_id + "&name=" + data.name,
+            url: window.location.origin + "/bkms/bkms_mysql_asp/dbs_handle/update_book_info.asp?action=update&target_id=" + data.target_id + "&name=" + data.name,
             async: true,
-            type: "get"
+            type: "post"
+            success: function(data) {
+                if (data === 'success') {
+                    alert("数据更新成功");
+                    return;
+                }
+            }
         });
     }
     </script>

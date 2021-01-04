@@ -2,5 +2,5 @@
 <%
 Session("login")=false
 Call logInOut("###<ID:"&Session("UserID")&"> |sign out| TIME:")
-response.Redirect "login.asp"
+response.Redirect "resources/templates/signin.html"
 %>
