@@ -551,12 +551,18 @@ response.write conn.state '是否连接成功 %>
         var newobj = document.createElement('input');
         //为新增元素添加类型
         newobj.type = 'text';
+        //获得原先的双击事件名称
+        var attr = $(element).attr("ondblclick");
+        // 移除原先的双击事件
+        $(element).removeAttr("ondblclick");
         //为新增元素添加value值
         newobj.value = oldhtml;
         //为新增元素添加光标离开事件
         newobj.onblur = function() {
             element.innerHTML = this.value == oldhtml ? oldhtml : this.value;
             //当触发时判断新增元素值是否为空，为空则不修改，并返回原有值
+            // 还原原先的双击事件
+            element.setAttribute("ondblclick", attr);
         }
         //设置该标签的子节点为空
         element.innerHTML = '';

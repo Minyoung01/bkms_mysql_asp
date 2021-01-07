@@ -1,6 +1,9 @@
 <!--#include file="utility/log.asp"-->
 <%
 Session("login")=false
-Call logInOut("###<ID:"&Session("UserID")&"> |sign out| TIME:")
-response.Redirect "resources/templates/signin.html"
+if not Session("UserID")="" then 
+	Call logInOut("###<ID:"&Session("UserID")&"> |sign out| TIME:")
+	response.Redirect "resources/templates/signin.html"
+else response.Redirect "resources/templates/signin.html"
+end if
 %>
