@@ -2,11 +2,12 @@
 <%
 if not Session("login") then response.redirect("resources/templates/signin.html")  
 %>
+<!-- #include file="utility/dbs_connect.asp" -->
 <%
-dim conn
-set conn = server.CreateObject("adodb.connection")
-conn.open "driver={MySQL ODBC 8.0 ANSI Driver};server=127.0.0.1; uid=root;password=root;database=books_management"  
-response.write conn.state '是否连接成功 
+'dim conn
+'set conn = server.CreateObject("adodb.connection")
+'conn.open "driver={MySQL ODBC 8.0 ANSI Driver};server=127.0.0.1; uid=root;password=root;database=books_management"  
+'response.write conn.state '是否连接成功 
 %>
 <%	
 	dim action

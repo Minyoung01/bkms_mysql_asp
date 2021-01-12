@@ -6,11 +6,13 @@
 if not Session("login") then response.redirect("resources/templates/signin.html")  
 %>
 <!-- 数据库连接 -->
+<!-- #include file="utility/dbs_connect.asp"
+ -->
 <%
-dim conn
-set conn = server.CreateObject("adodb.connection")
-conn.open "driver={MySQL ODBC 8.0 ANSI Driver};server=127.0.0.1; uid=root;password=root;database=books_management"  
-response.write conn.state '是否连接成功 %>
+    'dim conn
+    'set conn = server.CreateObject("adodb.connection")
+    'conn.open "driver={MySQL ODBC 8.0 ANSI Driver};server=127.0.0.1; uid=root;password=root;database=books_management"  
+    'response.write conn.state '是否连接成功 %>
 <%
     dim action,book_id,sql,name
     target_id = request.QueryString("target_id")
@@ -584,9 +586,10 @@ response.write conn.state '是否连接成功 %>
         data.author = $.trim($("#author_" + data.target_id).text());
         window.location.origin + "/bkms/bkms_mysql_asp/dbs_handle/update_book_info.asp"
         $.ajax({
-            url: window.location.origin + "/bkms/bkms_mysql_asp/dbs_handle/update_book_info.asp?action=update&target_id=" + data.target_id + "&name=" + data.name,
+            url: window.location.origin + "/bkms/bkms_mysql_asp/dbs_handle/update_book_info.asp?action=update&target_id=" + data.target_id,
             async: true,
-            type: "post"
+            type: "post",
+            data: data,
             success: function(data) {
                 if (data === 'success') {
                     alert("数据更新成功");

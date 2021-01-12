@@ -1,4 +1,5 @@
 <!--#include file="utility/log.asp"-->
+<!-- #include file="utility/dbs_connect.asp"-->
 <%
     Sub GetSession(UserID,UserPWD)
         Session("UserID")=UserID
@@ -6,11 +7,11 @@
     End Sub
 
     if request("action")="checkLogin" then
-        dim sql,conn
+        dim sql
         UserID = replace(trim(request("account")),"'","")
         UserPWD = replace(trim(request("password")),"'","")
-        set conn = server.CreateObject("adodb.connection")
-        conn.open "driver={MySQL ODBC 8.0 ANSI Driver};server=127.0.0.1; uid=root;password=root;database=books_management"  
+        'set conn = server.CreateObject("adodb.connection")
+        'conn.open "driver={MySQL ODBC 8.0 ANSI Driver};server=127.0.0.1; uid=root;password=root;database=books_management"  
         Set rs = Server.CreateObject( "ADODB.Recordset" )
         sql="select * from admin where admin_id="&UserID&" and password="&UserPwd&""
         rs.open sql,conn,2,3

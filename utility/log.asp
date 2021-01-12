@@ -50,6 +50,20 @@
         objFile.Close
     End Sub
 %>
+    <%
+    Sub debugLog(logStr)
+        Const ForAppending = 8 '8追加，2重写
+        LogFile = Server.MapPath("/bkms/bkms_mysql_asp/log/debug_log/debug.txt")
+        Set objFSO = CreateObject("Scripting.FileSystemObject")
+        If objFSO.FileExists(LogFile) Then
+            Set objFile = objFSO.OpenTextFile(LogFile,ForAppending)
+        Else
+            Set objFile = objFSO.CreateTextFile(LogFile)
+        End If
+        objFile.Writeline logStr&Now
+        objFile.Close
+    End Sub
+%>
 </body>
 
 </html>

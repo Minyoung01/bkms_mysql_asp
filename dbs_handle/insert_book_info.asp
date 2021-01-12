@@ -82,10 +82,11 @@
         end if
 	%>
     <!-- 连接数据库 -->
+    <!-- #include file="../utility/dbs_connect.asp" -->
     <%
-		dim conn
-		set conn = server.CreateObject("adodb.connection")
-		conn.open "driver={MySQL ODBC 8.0 ANSI Driver};server=127.0.0.1; uid=root;password=root;database=books_management"  
+		'dim conn
+		'set conn = server.CreateObject("adodb.connection")
+		'conn.open "driver={MySQL ODBC 8.0 ANSI Driver};server=127.0.0.1; uid=root;password=root;database=books_management"  
 		Set rs = Server.CreateObject( "ADODB.Recordset" )
 	%>
     <!-- 判断重复ID -->
