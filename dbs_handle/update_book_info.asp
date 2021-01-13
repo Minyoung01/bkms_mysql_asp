@@ -3,8 +3,7 @@
 <!-- #include file="utility/dbs_connect.asp" -->
 <%
 if not Session("login") then response.redirect("../resources/templates/signin.html")  
-
-
+if Session("UserID")="test" then response.Write("<script>alert('当前用户无此操作权限');window.location.href='../admin.asp'</script>")  
 'dim conn
 'set conn = server.CreateObject("adodb.connection")
 'conn.open "driver={MySQL ODBC 8.0 ANSI Driver};server=127.0.0.1; uid=root;password=root;database=books_management"  

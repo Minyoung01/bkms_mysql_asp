@@ -25,3 +25,22 @@ update book_info set name = 'Effective Java' where book_id = '70000004'2021/1/7 
 Effective Java2021/1/7 15:59:44
 600000082021/1/7 15:59:44
 update book_info set name = 'Effective Java' where book_id = '60000008'2021/1/7 15:59:44
+select * from admin where admin_id=admin and password=admin2021/1/12 18:40:36
+select * from admin where admin_id= and password=2021/1/12 18:46:49
+select * from admin where admin_id=20170001 and password=1111112021/1/12 18:47:04
+select * from admin where admin_id='admin'' and password='admin'2021/1/12 18:50:13
+select * from admin where admin_id='admin'' and password='admin'2021/1/12 18:50:25
+select * from admin where admin_id='admin' and password='admin'2021/1/12 18:50:53
+select * from admin where admin_id='test' and password='test'2021/1/12 18:55:44
+select * from admin where admin_id='admin' and password='admin'2021/1/12 19:00:19
+select * from admin where admin_id='test' and password='test'2021/1/12 19:14:14
+select * from admin where admin_id='admin' and password='admin'2021/1/12 19:14:36
+select * from admin where admin_id='test' and password='test'2021/1/12 19:19:14
+select * from admin where admin_id='admin' and password='admin'2021/1/12 19:21:21
+select * from admin where admin_id='test' and password='test'2021/1/12 19:22:18
+select * from admin where admin_id='' and password=''2021/1/13 13:14:28
+select * from admin where admin_id='admin' and password='admin'2021/1/13 13:14:32
+select * from admin where admin_id='admin' and password='admin'2021/1/13 13:23:04
+select * from admin where admin_id='admin' and password='admin'2021/1/13 13:23:35
+select * from admin where admin_id='admin' and password='admin'2021/1/13 13:23:37
+select * from admin where admin_id='admin' and password='admin'2021/1/13 13:23:41

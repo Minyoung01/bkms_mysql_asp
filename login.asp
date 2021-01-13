@@ -13,13 +13,14 @@
         'set conn = server.CreateObject("adodb.connection")
         'conn.open "driver={MySQL ODBC 8.0 ANSI Driver};server=127.0.0.1; uid=root;password=root;database=books_management"  
         Set rs = Server.CreateObject( "ADODB.Recordset" )
-        sql="select * from admin where admin_id="&UserID&" and password="&UserPwd&""
+        sql="select * from admin where admin_id='"&UserID&"' and password='"&UserPwd&"'"
+        Call debugLog(sql)
         rs.open sql,conn,2,3
         if rs.eof and rs.bof then
 %>
 <script language="javascript">
 alert("用户名或密码错误！请重新输入！")
-top.document.location = "login.asp"
+top.document.location = "resources/templates/signin.html"
 </script>
 <%
         else

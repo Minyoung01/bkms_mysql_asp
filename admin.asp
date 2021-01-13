@@ -14,7 +14,7 @@ if not Session("login") then response.redirect("resources/templates/signin.html"
     'conn.open "driver={MySQL ODBC 8.0 ANSI Driver};server=127.0.0.1; uid=root;password=root;database=books_management"  
     'response.write conn.state '是否连接成功 %>
 <%
-    dim action,book_id,sql,name
+    dim action, book_id,sql,name
     target_id = request.QueryString("target_id")
     name =request.QueryString("name")
     action = request.QueryString("action")
@@ -41,21 +41,22 @@ if not Session("login") then response.redirect("resources/templates/signin.html"
         end if
      
     elseif action="del" then
-        '删
-        on error resume next 'Err对象保存了“错误信息”
-        sql = "delete from book_info where book_id ='"&book_id&"'"
-        set res =  conn.execute(sql)
-        if Err.number = 0 then
-            sql = "select * from book_info  order by book_id desc"
+            '删
+            if Session("UserID")="test" then response.Write("<script>alert('当前用户无此操作权限');window.location.href='admin.asp'</script>")
+            if Session("UserID")="test" then response.end()
+            on error resume next 'Err对象保存了“错误信息”
+            sql = "delete from book_info where book_id ='"&book_id&"'"
+            set res =  conn.execute(sql)
+            if Err.number = 0 then
+                sql = "select * from book_info  order by book_id desc"
             rs.open sql,conn,1,1 '（1,1为只读数据,1,3为插入数据，2,3是修改数据)
-            call successFn("删除")
-        else
-            call errFn("数据删除失败")
-        end if
+                call successFn("删除")
+            else
+                call errFn("数据删除失败")
+            end if
     elseif action="add" then
         ' 增
         '
-
         if request.form("book_id") = "" then
             response.Write("<script>alert('ID为空');window.history.back().reload;</script>")
         elseif request.form("name") = "" then
@@ -116,7 +117,6 @@ if not Session("login") then response.redirect("resources/templates/signin.html"
                 call errFn("数据插入失败")
             end if
         end if
-
         ' 查询操作book_id
     elseif action="sel_by_book_id_asc" then
     '查询数据按照book_id正序查找
@@ -200,7 +200,7 @@ if not Session("login") then response.redirect("resources/templates/signin.html"
 
 <body>
     <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-        <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="#">Company name</a>
+        <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="#">图书管理系统</a>
         <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -222,84 +222,12 @@ if not Session("login") then response.redirect("resources/templates/signin.html"
                                 图书管理系统<span class="sr-only">(current)</span>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span data-feather="file"></span>
-                                Orders
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span data-feather="shopping-cart"></span>
-                                Products
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span data-feather="users"></span>
-                                Customers
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span data-feather="bar-chart-2"></span>
-                                Reports
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span data-feather="layers"></span>
-                                Integrations
-                            </a>
-                        </li>
-                    </ul>
-                    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-                        <span>Saved reports</span>
-                        <a class="d-flex align-items-center text-muted" href="#" aria-label="Add a new report">
-                            <span data-feather="plus-circle"></span>
-                        </a>
-                    </h6>
-                    <ul class="nav flex-column mb-2">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span data-feather="file-text"></span>
-                                Current month
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span data-feather="file-text"></span>
-                                Last quarter
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span data-feather="file-text"></span>
-                                Social engagement
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span data-feather="file-text"></span>
-                                Year-end sale
-                            </a>
-                        </li>
                     </ul>
                 </div>
             </nav>
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2">图书管理系统</h1>
-                    <div class="btn-toolbar mb-2 mb-md-0">
-                        <div class="btn-group mr-2">
-                            <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
-                        </div>
-                        <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
-                            <span data-feather="calendar"></span>
-                            This week
-                        </button>
-                    </div>
                 </div>
                 <div>
                     <!-- Button trigger modal -->
@@ -410,11 +338,6 @@ if not Session("login") then response.redirect("resources/templates/signin.html"
                                             出版社
                                         </button>
                                         <div class="dropdown-menu">
-                                            <a class="dropdown-item" href="#">Action</a>
-                                            <a class="dropdown-item" href="#">Another action</a>
-                                            <a class="dropdown-item" href="#">Something else here</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">Separated link</a>
                                         </div>
                                     </div>
                                 </th>
@@ -427,11 +350,6 @@ if not Session("login") then response.redirect("resources/templates/signin.html"
                                             价格
                                         </button>
                                         <div class="dropdown-menu">
-                                            <a class="dropdown-item" href="#">Action</a>
-                                            <a class="dropdown-item" href="#">Another action</a>
-                                            <a class="dropdown-item" href="#">Something else here</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">Separated link</a>
                                         </div>
                                     </div>
                                 </th>
@@ -441,11 +359,6 @@ if not Session("login") then response.redirect("resources/templates/signin.html"
                                             发行时期
                                         </button>
                                         <div class="dropdown-menu">
-                                            <a class="dropdown-item" href="#">Action</a>
-                                            <a class="dropdown-item" href="#">Another action</a>
-                                            <a class="dropdown-item" href="#">Something else here</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">Separated link</a>
                                         </div>
                                     </div>
                                 </th>
@@ -455,11 +368,6 @@ if not Session("login") then response.redirect("resources/templates/signin.html"
                                             类别
                                         </button>
                                         <div class="dropdown-menu">
-                                            <a class="dropdown-item" href="#">Action</a>
-                                            <a class="dropdown-item" href="#">Another action</a>
-                                            <a class="dropdown-item" href="#">Something else here</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">Separated link</a>
                                         </div>
                                     </div>
                                 </th>
@@ -469,11 +377,6 @@ if not Session("login") then response.redirect("resources/templates/signin.html"
                                             书架号
                                         </button>
                                         <div class="dropdown-menu">
-                                            <a class="dropdown-item" href="#">Action</a>
-                                            <a class="dropdown-item" href="#">Another action</a>
-                                            <a class="dropdown-item" href="#">Something else here</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">Separated link</a>
                                         </div>
                                     </div>
                                 </th>
@@ -483,11 +386,6 @@ if not Session("login") then response.redirect("resources/templates/signin.html"
                                             状态
                                         </button>
                                         <div class="dropdown-menu">
-                                            <a class="dropdown-item" href="#">Action</a>
-                                            <a class="dropdown-item" href="#">Another action</a>
-                                            <a class="dropdown-item" href="#">Something else here</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">Separated link</a>
                                         </div>
                                     </div>
                                 </th>
